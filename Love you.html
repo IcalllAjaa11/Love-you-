@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cinta Buih ❤️</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    #loading-screen {
+      position: fixed;
+      z-index: 9999;
+      background: linear-gradient(135deg, #ffc0cb, #ff69b4);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+    }
+
+    #progress-bar {
+      width: 80%;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    #progress-fill {
+      width: 0%;
+      height: 100%;
+      background-color: white;
+      border-radius: 10px;
+      transition: width 0.4s ease-in-out;
+    }
+
+    body.loaded {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: url('https://img.freepik.com/vector-gratis/tema-san-valentin-corazones-cielo-rosa_1308-38030.jpg?semt=ais_hybrid&w=740') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .message {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+      font-size: 28px;
+      color: #d63384;
+      font-weight: bold;
+      margin-bottom: 25px;
+      animation: bounce 1s infinite;
+      cursor: pointer;
+      position: relative;
+      z-index: 3;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    #bubbles-text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .text-bubble {
+      position: absolute;
+      font-size: 18px;
+      font-family: 'Cursive', sans-serif;
+      color: #d63384;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 10px 20px;
+      border-radius: 25px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      animation: floatText 8s ease-in-out forwards;
+      white-space: nowrap;
+    }
+
+    @keyframes floatText {
+      0% { opacity: 0; transform: scale(0.5) translateY(0px); }
+      50% { opacity: 1; transform: scale(1.2) translateY(-50px); }
+      100% { opacity: 0; transform: scale(1) translateY(-100px); }
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: fadeHeart 2s forwards;
+    }
+
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes fadeHeart {
+      0% { opacity: 1; transform: scale(1) rotate(45deg); }
+      100% { opacity: 0; transform: scale(0.3) rotate(45deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading-screen">
+    <h1>Tunggu sebentar yaa...</h1>
+    <div id="progress-bar">
+      <div id="progress-fill"></div>
+    </div>
+  </div>
+
+  <div class="message" style="display:none;" onclick="showLove()">Aku Sayang Kamu ❤️</div>
+  <div id="bubbles-text"></div>
+
+  <script>
+    const fill = document.getElementById('progress-fill');
+    const loadingScreen = document.getElementById('loading-screen');
+    const message = document.querySelector('.message');
+    const bubblesContainer = document.getElementById('bubbles-text');
+
+    let progress = 0;
+
+    const interval = setInterval(() => {
+      progress += Math.random() * 10;
+      if (progress > 100) progress = 100;
+      fill.style.width = progress + '%';
+
+      if (progress >= 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+          document.body.classList.add('loaded');
+          message.style.display = 'block';
+        }, 500);
+      }
+    }, 500);
+
+    const messages = [
+      "Aku cinta kamu banget ❤️", "Terima kasih sudah hadir di hidupku 🌟",
+      "Kamu adalah favoritku 💕", "Selamanya bersamamu 🥰",
+      "Kamu dan aku untuk selamanya 💖", "Senyummu bikin hariku cerah 💫",
+      "Kamu adalah hal terbaik yang pernah ada 😍", "Setiap saat bersamamu itu ajaib ✨",
+      "Aku selalu mikirin kamu 💭", "Hatiku milikmu 💘"
+    ];
+
+    function createTextBubble() {
+      const bubble = document.createElement("div");
+      bubble.className = "text-bubble";
+      bubble.innerText = messages[Math.floor(Math.random() * messages.length)];
+      const left = Math.random() * 80 + 10;
+      const top = Math.random() * 80 + 10;
+      bubble.style.left = left + "vw";
+      bubble.style.top = top + "vh";
+      bubblesContainer.appendChild(bubble);
+      setTimeout(() => bubble.remove(), 8000);
+    }
+
+    setInterval(createTextBubble, 700);
+
+    function showLove() {
+      const heartPositions = [
+        [50, 20], [40, 30], [60, 30],
+        [35, 45], [45, 50], [55, 50], [65, 45],
+        [40, 65], [60, 65], [50, 75]
+      ];
+      heartPositions.forEach(([x, y], i) => {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.className = 'heart';
+          heart.style.left = x + 'vw';
+          heart.style.top = y + 'vh';
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 2000);
+        }, i * 150);
+      });
+
+      // Setelah animasi selesai, kirim ke WhatsApp
+      setTimeout(() => {
+        const number = "6285860427500"; // GANTI nomor pasangannya
+        const message = encodeURIComponent("Aku sayang kamu selamanya! ❤️");
+        window.open(`https://wa.me/${number}?text=${message}`, "_blank");
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
